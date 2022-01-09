@@ -6,7 +6,7 @@ To start the app, follow the steps below.
 
 2. Go to root directory:
 
-    cd generator
+    cd generators/generators
 
 3. Install dependencies.
 

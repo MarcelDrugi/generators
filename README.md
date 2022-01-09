@@ -6,7 +6,7 @@
 
 ###### 2. Go to root directory:
 
-    cd generator
+    cd generators/generators
 
 ###### 3. Install dependencies.
 Using composer, in root directory:
