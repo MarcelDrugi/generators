@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomepageController!{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col" style="width: 100%">
+            <h2>Wyświetl logi z podanego okresu:</h2>
+            <div style="font-size: 18px; margin-bottom: 30px"> 
+                Daty należy wprowadzić w  formacie: <br />
+                <b>'YYYY-mm-dd hh:ii:ss'</b> np. <b>2022-01-07 12:00:00</b>
+            </div>
+            {% if wrongDataFormat == true %}
+                <div class="alert alert-danger" role="alert">
+                    <b>Niepoprawne dane!</b> <br />
+                    Popraw formatowanie dat.
+                </div>
+            {% endif %}
+            {% if internalError == true %}
+                <div class="alert alert-danger" role="alert">
+                    <b>Błąd serwera. Przepraszamy.</b>
+                </div>
+            {% endif %}
+            <div>
+                {{ form_start(form) }}
+                    <div class="row">
+                        <div class="col-3">
+                            {{ form_label(form.generatorId, 'nr generatora') }} {{ form_widget(form.generatorId) }}
+                        </div>
+                        <div class="col-4">
+                            {{ form_label(form.from, 'od') }} {{ form_widget(form.from) }}
+                        </div>
+                        <div class="col-4">
+                            {{ form_label(form.to, 'do') }} {{ form_widget(form.to) }}
+                        </div>
+                        <div class="col-1">
+                            <input type="submit" id="confirm" class="btn btn-primary btn-sm"/>
+                        </div>
+                    </div>
+                    {% if logs %}
+                        <nav aria-label="Page navigation example">
+                            <div class="pagination justify-content-center" style="margin-top: 25px;">
+                                {% if page == 1 %} <button style="color: black" type="button" class="page-link" onclick="document.getElementById('form_hiddenPageNumber').value = 1; document.getElementById('confirm').click()" >1</button> {% else %} <button type="button" class="page-link" onclick="document.getElementById('form_hiddenPageNumber').value = 1; document.getElementById('confirm').click()" >1</button> {% endif %}
+                                {% if page - 1 > 1 %}<button type="button" class="page-link" disabled>...</button><button type="button" class="page-link" onclick="document.getElementById('form_hiddenPageNumber').value = {{ page - 1 }}; document.getElementById('confirm').click()">{{ page - 1 }}</button> {% endif %}
+                                {% if page != 1 and page != countQuery %}<button style="color: black" type="button" class="page-link" onclick="document.getElementById('form_hiddenPageNumber').value = {{ page }}; document.getElementById('confirm').click()">{{ page }}</button>{% endif %}
+                                {% if page + 1 < countQuery %}<button type="button" class="page-link" onclick="document.getElementById('form_hiddenPageNumber').value = {{ page + 1 }}; document.getElementById('confirm').click()">{{ page + 1 }}</button><button type="button" class="page-link" disabled>...</button> {% endif %}
+                                {% if page == countQuery and countQuery > 1 %} <button style="color: black" type="button" class="page-link" onclick="document.getElementById('form_hiddenPageNumber').value = {{ countQuery }}; document.getElementById('confirm').click()">{{countQuery}}</button> {% elseif countQuery > 1%} <button type="button" class="page-link" onclick="document.getElementById('form_hiddenPageNumber').value = {{ countQuery }}; document.getElementById('confirm').click()">{{countQuery}}</button> {% endif %}
+                            </div>
+                        </nav>
+                    {% endif %}
+                {{ form_end(form) }}
+                <table class="table table-striped ">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID RAPORTU</th>
+                            <th>ID GENERATORA</th>
+                            <th>RAPORT Z GODZINY</th>
+                            <th>ŚREDNIA MOC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                            <tr>
+                                <td>{{ log.id }}</td>
+                                <td>{{ log.generatorId }}</td>
+                                <td>{{ log.datetime|date('Y-m-d H:i:s') }}</td>
+                                <td>{{ log.averagePowerMw}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col">
+            <div style="margin-left:10%">
+                bb
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
