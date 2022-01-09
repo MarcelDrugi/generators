@@ -29,7 +29,7 @@ To start the app, follow the steps below.
 
 6. Check if the application works by starting the server:
 
-    symfony server:start --port=8005
+    php -S 127.0.0.1:8005 -t public
 
     If you haven't changed the settings, the application should start at: http://127.0.0.1:8005
 
