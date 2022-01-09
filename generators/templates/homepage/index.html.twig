@@ -19,7 +19,7 @@
             <div style="margin-bottom: 40px;">
                 Do wygenerowania raportów dla wszystkich generatorów z losowymi wartościami za rok 2019  służy komenda:<br />
                 <code>php bin/console app:seedData</code> <br /><br />
-                Raport dla bieżącej chwili (ostatniej godziny) dla wszystkich generatorów można wygenerować komendą:<br />
+                Raport dla bieżącej chwili (godzinowe średnie dla ostatnich 24h) dla wszystkich generatorów można wygenerować komendą:<br />
                 <code>php bin/console app:dailyReport</code> <br />
                 (wymaga wcześniejszego wprowadzenia jakichś logów, w przypadku braku logów, średnia moc w raporcie wyniesie 0)
             </div>
@@ -95,7 +95,7 @@
             </div>
         </div>
         <div class="col">
-            <div style="margin-left:10%">
+            <div style="margin-left:10%; margin-right: 5px">
                 <h2>API:</h2>
                 <div>
                     Do wprowadzania/pobierania logowań mocy generatorów służą poniższe endpointy:<br />
