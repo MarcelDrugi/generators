@@ -4,10 +4,27 @@
 
 {% block body %}
 
+    <div class="container" style="margin-bottom: 70px">
+        <h5>
+            Zadanie rekrutacyjne na stanowisko Junior Backend Developer wykonane dla GOGOMEDIA. <br /><br />
+            Informacje o autorze:<br />
+            Piotr Mazur <br />
+            piotr.a.mazur@wp.pl <br />
+            repozytorium z kodem: <a href="https://github.com/MarcelDrugi/cinema"> https://github.com/MarcelDrugi/cinema </a> <br /><br />
+        </h5>
+    </div>
     <div class="row">
-        <div class="col" style="width: 100%">
-            <h2>Wyświetl logi z podanego okresu:</h2>
-            <div style="font-size: 18px; margin-bottom: 30px"> 
+        <div class="col" style="width: 100%; background-color: AliceBlue; margin-left: 5px">
+            <h2>Raporty:</h2>
+            <div style="margin-bottom: 40px;">
+                Do wygenerowania raportów dla wszystkich generatorów z losowymi wartościami za rok 2019  służy komenda:<br />
+                <code>php bin/console app:seedData</code> <br /><br />
+                Raport dla bieżącej chwili (ostatniej godziny) dla wszystkich generatorów można wygenerować komendą:<br />
+                <code>php bin/console app:dailyReport</code> <br />
+                (wymaga wcześniejszego wprowadzenia jakichś logów, w przypadku braku logów, średnia moc w raporcie wyniesie 0)
+            </div>
+            <h2>Wyświetl raporty z podanego okresu:</h2>
+            <div style="font-size: 18px; margin-bottom: 30px;"> 
                 Daty należy wprowadzić w  formacie: <br />
                 <b>'YYYY-mm-dd hh:ii:ss'</b> np. <b>2022-01-07 12:00:00</b>
             </div>
@@ -22,19 +39,24 @@
                     <b>Błąd serwera. Przepraszamy.</b>
                 </div>
             {% endif %}
+            {% if logs is empty and app.request.method == 'POST' %}
+                <div class="alert alert-warning" role="alert">
+                    Brak wyników dla podanych kryteriów.
+                </div>
+            {% endif %}
             <div>
                 {{ form_start(form) }}
                     <div class="row">
                         <div class="col-3">
                             {{ form_label(form.generatorId, 'nr generatora') }} {{ form_widget(form.generatorId) }}
                         </div>
-                        <div class="col-4">
+                        <div class="col-3">
                             {{ form_label(form.from, 'od') }} {{ form_widget(form.from) }}
                         </div>
-                        <div class="col-4">
+                        <div class="col-3">
                             {{ form_label(form.to, 'do') }} {{ form_widget(form.to) }}
                         </div>
-                        <div class="col-1">
+                        <div class="col-3">
                             <input type="submit" id="confirm" class="btn btn-primary btn-sm"/>
                         </div>
                     </div>
@@ -74,7 +96,39 @@
         </div>
         <div class="col">
             <div style="margin-left:10%">
-                bb
+                <h2>API:</h2>
+                <div>
+                    Do wprowadzania/pobierania logowań mocy generatorów służą poniższe endpointy:<br />
+                    <table class="table table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>URL</th>
+                                <th>METODA</th>
+                                <th>PARAMETRY</th>
+                                <th>PRZYKŁADOWE BODY REQUEST</th>
+                                <th>OPIS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>http://127.0.0.1:8005/api/post</td>
+                                <td>POST</td>
+                                <td></td>
+                                <td><code>{"generatorId": 7, "powerKw": 492, "time": 1641688135028017}</code></td>
+                                <td>Zapisywanie mocy w [KW] dla generatora o ID z zakresu (1-20) w czasie podanym jako 16-sto cyfrowy timestamp </td>
+                            </tr>
+                            <tr>
+                                <td>http://127.0.0.1:8005/api/get</td>
+                                <td>GET</td>
+                                <td><b>generatorId</b> - nr generatora(int) <br /> <b>from</b> - data od (timestamp 16-sto cyfrowy) <br /> <b>to</b> - data do (timestamp 16-sto cyfrowy)</td>
+                                <td></td>
+                                <td>Zwaraca zalogowane pomiary mocy generatora. ID generatora oraz zakres dat przekwzywane jako argumenty w URL.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    Nie tworzyłem całego CRUD-a, bo ze względu na logikę API edycja czy usunięcie pojedynczego wpisu nie bardzo ma sens.<br />
+                    Nie uwzględniłem także wprowadzania wielu logowań jednym requestem, bo jak zrozumiałem zapis odbywa się wyłącznie "na bieążąco". 
+                </div>
             </div>
         </div>
     </div>

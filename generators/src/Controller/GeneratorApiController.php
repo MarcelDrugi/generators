@@ -71,6 +71,12 @@ class GeneratorApiController extends AbstractController
     }
 
     /**
+     * Adding a single logo for a single generator.
+     * The request body must contain:
+     * "generatorId", 
+     * "time"(timestamp 16-digit)
+     * "powerKw"
+     * 
      * @Route("/api/post", name="set_data", methods={"POST"})
      */
     public function setData(Request $request): JsonResponse
@@ -117,6 +123,12 @@ class GeneratorApiController extends AbstractController
     }
 
     /**
+     * Returning a list of single logs from a given time interval. 
+     * Necessary url parameters:
+     * "generatorId", 
+     * "from"(timestamp 16-digit), 
+     * "to"(timestamp 16-digit)
+     * 
      * @Route("/api/get", name="get_data", methods={"GET"})
      */
     public function getData(Request $request): JsonResponse
